@@ -1,6 +1,6 @@
 Installation instructions:
 1. Download the GodotModLoader zip from https://github.com/GodotModding/godot-mod-loader/releases if you haven't already
-2. Download the 'mods_unpacked' folder as a zip file
+2. Download the latest zip release or download the 'mods_unpacked' folder as a zip file
 3. Create a folder called "mods" in your game directory (next to RAM.exe and RAM.pck) and place the mod zip in the mods folder
 
 EM1 CPU Changes:

@@ -38,7 +38,7 @@ func spawn_explosion_wave(chain: ModLoaderHookChain, endpoint, damage = 15, delt
 	
 	var cpu := chain.reference_object as CPU_BOSS
 	
-	delta_delay /= GameManager.dm_game_speed_mod
+	delta_delay /= GameManager.time_manager.enemy_timescale
 	
 	if cpu.AI.em1:
 		delta_delay *= 0.5

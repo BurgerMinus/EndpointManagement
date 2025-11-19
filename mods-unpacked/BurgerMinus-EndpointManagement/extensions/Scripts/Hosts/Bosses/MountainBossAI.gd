@@ -214,7 +214,7 @@ func spawn_explosion_wave(endpoint, damage = 15, delta_delay = 0.07, size = 0.5,
 	
 	if em1:
 		delta_delay *= 0.5
-	delta_delay /= GameManager.dm_game_speed_mod
+	delta_delay /= GameManager.time_manager.enemy_timescale
 	
 	var angle = dir.angle()
 	var num_explosions = int(dist/25)

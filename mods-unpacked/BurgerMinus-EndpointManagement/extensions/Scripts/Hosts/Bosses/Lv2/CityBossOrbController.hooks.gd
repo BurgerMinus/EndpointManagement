@@ -9,21 +9,21 @@ func initialize(chain: ModLoaderHookChain, boss = null):
 	# scale laser cage with game speed
 	var base_l_c_process = Callable(controller.states[controller.State.LASER_CAGE][controller.PROCESS])
 	controller.states[controller.State.LASER_CAGE][controller.PROCESS] = func():
-		controller.pattern_rot += controller.pattern_rot_vel*controller.delta*(GameManager.dm_game_speed_mod - 1)
+		controller.pattern_rot += controller.pattern_rot_vel*controller.delta*(GameManager.time_manager.enemy_timescale - 1)
 		if controller.state_counter == 1:
 			var t = sin(controller.pattern_timer*PI/2.5)
 			controller.pattern_speed = 75*sqrt(t) if t > 0 else 0
-			controller.anchor_pos += controller.pattern_direction*controller.pattern_speed*controller.delta*(GameManager.dm_game_speed_mod - 1)
+			controller.anchor_pos += controller.pattern_direction*controller.pattern_speed*controller.delta*(GameManager.time_manager.enemy_timescale - 1)
 		base_l_c_process.call()
 	
 	# scale laser disc with game speed
 	var base_l_d_process = Callable(controller.states[controller.State.LASER_DISC][controller.PROCESS])
 	controller.states[controller.State.LASER_DISC][controller.PROCESS] = func():
-		controller.pattern_rot += controller.pattern_rot_vel*controller.delta*(GameManager.dm_game_speed_mod - 1)
+		controller.pattern_rot += controller.pattern_rot_vel*controller.delta*(GameManager.time_manager.enemy_timescale - 1)
 		if controller.state_counter == 0:
-			controller.pattern_rot_vel += controller.delta * (GameManager.dm_game_speed_mod - 1) * 5
+			controller.pattern_rot_vel += controller.delta * (GameManager.time_manager.enemy_timescale - 1) * 5
 		elif controller.state_counter == 1:
-			controller.pattern_speed = 400 * smoothstep(0.0, 1.25, controller.pattern_timer) * (GameManager.dm_game_speed_mod - 1)
+			controller.pattern_speed = 400 * smoothstep(0.0, 1.25, controller.pattern_timer) * (GameManager.time_manager.enemy_timescale - 1)
 			controller.anchor_pos += controller.pattern_direction*controller.pattern_speed*controller.delta
 		base_l_d_process.call()
 	
@@ -124,7 +124,7 @@ func initialize(chain: ModLoaderHookChain, boss = null):
 				if controller.pattern_timer < 1.0:
 					controller.boss.AI.angles[0] = PI*2*randf()
 				elif controller.pattern_timer < 4.25:
-					controller.state_timer -= controller.delta * (GameManager.dm_game_speed_mod - 1) 
+					controller.state_timer -= controller.delta * (GameManager.time_manager.enemy_timescale - 1) 
 					if controller.state_timer < 0.0:
 						controller.state_timer = 0.1
 						for i in range(6):
@@ -156,13 +156,15 @@ func initialize(chain: ModLoaderHookChain, boss = null):
 					return
 					
 				controller.active_orbs[0].telegraph_laser2()
-				controller.active_orbs[0].set_laser_endpoint(controller.active_orbs[0].global_position + 500*controller.active_orbs[0].global_position.direction_to(controller.foe_pos())),
+				controller.active_orbs[0].set_laser_endpoint(controller.active_orbs[0].global_position + 500*controller.active_orbs[0].global_position.direction_to(controller.foe_pos()))
+				controller.pattern_timer = -0.25,
 				
 			controller.PROCESS: func():
-				controller.state_timer -= controller.delta * (GameManager.dm_game_speed_mod - 1) 
+				controller.state_timer -= controller.delta * (GameManager.time_manager.enemy_timescale - 1) 
+				controller.active_orbs[0].target_pos = controller.anchor_pos + controller.target_offsets[0]
 				controller.active_orbs[1].target_pos = controller.anchor_pos + controller.target_offsets[1]
 				controller.active_orbs[2].target_pos = controller.anchor_pos + controller.target_offsets[2]
-				if controller.pattern_timer < 0.25:
+				if controller.pattern_timer < 0.2:
 					controller.anchor_pos = controller.foe_pos()
 					controller.active_orbs[0].set_laser_endpoint(controller.active_orbs[0].global_position + 500*controller.active_orbs[0].global_position.direction_to(controller.foe_pos()))
 				elif controller.pattern_timer < 0.33:
@@ -273,11 +275,11 @@ func initialize(chain: ModLoaderHookChain, boss = null):
 		
 		var l_c_process = Callable(controller.states[controller.State.LASER_CAGE][controller.PROCESS])
 		controller.states[controller.State.LASER_CAGE][controller.PROCESS] = func():
-			controller.pattern_rot += 0.5*controller.pattern_rot_vel*controller.delta*GameManager.dm_game_speed_mod
+			controller.pattern_rot += 0.5*controller.pattern_rot_vel*controller.delta*GameManager.time_manager.enemy_timescale
 			if controller.state_counter == 1:
 				var t = sin(controller.pattern_timer*PI/2.5)
 				controller.pattern_speed = 75*sqrt(t) if t > 0 else 0
-				controller.anchor_pos += 0.5*controller.pattern_direction*controller.pattern_speed*controller.delta*GameManager.dm_game_speed_mod
+				controller.anchor_pos += 0.5*controller.pattern_direction*controller.pattern_speed*controller.delta*GameManager.time_manager.enemy_timescale
 				controller.pattern_timer += controller.delta
 			l_c_process.call()
 		
@@ -303,7 +305,7 @@ func update(chain: ModLoaderHookChain, delta):
 	
 	chain.execute_next([delta])
 	
-	controller.pattern_timer += delta * (GameManager.dm_game_speed_mod - 1)
+	controller.pattern_timer += delta * (GameManager.time_manager.enemy_timescale - 1)
 
 func get_random_pattern(chain: ModLoaderHookChain, orb_count = -1):
 	

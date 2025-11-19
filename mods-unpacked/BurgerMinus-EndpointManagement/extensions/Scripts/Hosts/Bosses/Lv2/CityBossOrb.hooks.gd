@@ -42,10 +42,6 @@ func _physics_process(chain: ModLoaderHookChain, delta):
 				orb.player_process(delta)
 			else:
 				orb.ai_process(delta)
-		#		if GameManager.player.upgrades['scorn'] > 0 and GameManager.player.host_known and swap_shield_health < 1 and time_since_player_damage > 2:
-		#			max_swap_shield_health = max(max_swap_shield_health, 1)
-		#			swap_shield_health = 1
-		#			update_swap_shield()
 				
 		if not orb.dead and not orb.stunned:
 			orb.misc_update(delta)

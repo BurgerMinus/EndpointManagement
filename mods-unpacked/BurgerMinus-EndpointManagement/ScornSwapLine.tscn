@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://dssk777dlxmv5"]
+
+[ext_resource type="Texture2D" uid="uid://3k3dhoajrjiv" path="res://Art/UI/swap animation 2.png" id="1_tnsnf"]
+[ext_resource type="Script" path="res://mods-unpacked/BurgerMinus-EndpointManagement/ScornSwapLine.gd" id="2_738sr"]
+
+[sub_resource type="Shader" id="1"]
+code = "shader_type canvas_item;
+
+uniform float h_tiles = 3.0;
+uniform vec4 region = vec4(0, 0, 0, 0);
+uniform vec2 full_res = vec2(1, 1);
+
+void fragment(){
+	float x =  mod((UV.x * h_tiles), 1.0);
+	
+	x = region.x/full_res.x + x*(region.z/full_res.x);
+	//float y = region.y/full_res.y + UV.y*(region.w/full_res.y);
+	
+	vec2 uv = vec2(x, UV.y);
+	COLOR = texture(TEXTURE, uv);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_64nqy"]
+resource_local_to_scene = true
+shader = SubResource("1")
+shader_parameter/h_tiles = 16.0
+shader_parameter/region = Vector4(0, 0, 80, 32)
+shader_parameter/full_res = Vector2(960, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iuxh2"]
+size = Vector2(80, 20)
+
+[node name="Sprite2D" type="Sprite2D"]
+light_mask = 2
+z_index = 200
+texture_repeat = 3
+material = SubResource("ShaderMaterial_64nqy")
+position = Vector2(40, 1)
+texture = ExtResource("1_tnsnf")
+centered = false
+offset = Vector2(-40, -17)
+hframes = 12
+script = ExtResource("2_738sr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_iuxh2")

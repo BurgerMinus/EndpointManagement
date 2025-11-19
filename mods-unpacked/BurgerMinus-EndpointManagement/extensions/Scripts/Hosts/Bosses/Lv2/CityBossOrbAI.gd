@@ -56,7 +56,7 @@ func initialize(b, starting_conditions = null):
 		var gtfo_enter = Callable(states[State.GTFO_BLAST][ENTER])
 		states[State.GTFO_BLAST][ENTER] = func():
 			gtfo_enter.call()
-			body.max_speed = 200
+			body.max_speed = 150
 		
 		var gtfo_process = Callable(states[State.GTFO_BLAST][PROCESS])
 		states[State.GTFO_BLAST][PROCESS] = func():

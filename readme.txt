@@ -23,6 +23,7 @@ EM2 Heap Changes:
 - All bullet attacks fire more bullets
 
 EM2 Heap Orb Changes (tethered):
+- Control timer decreased from 12 seconds to 8
 - Attack cooldown is halved
 - When an orb's shield is broken, it will regenerate its shield partially after 2 seconds if it is still tethered
 - Single Orb: decreased telegraph on laser snipe
@@ -37,6 +38,7 @@ EM2 Heap Orb Changes (tethered):
 - NEW MOVE: two orbs cage the player with bullets before the third orb fires a laser
 
 EM2 Heap Orb Changes (untethered):
+- Control timer decreased from 5 seconds to 4
 - Orbs cannot be killed
 - Orb moves significantly faster during blast attack
 - Orb tracks the player better during persistent laser attack

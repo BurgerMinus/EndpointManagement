@@ -6,6 +6,8 @@ var mod_dir_path := ""
 
 func _init() -> void:
 	
+	mod_dir_path = ModLoaderMod.get_unpacked_dir().path_join(EM_DIR)
+	
 	Upgrades.antiupgrades['harder_bosses'] = {
 		'name' : "Endpoint Management",
 		'desc' : "Greatly increases the difficulty of +1 boss per stack",
@@ -18,9 +20,11 @@ func _init() -> void:
 		'daily_run_compatible' : false
 	}
 	
-	mod_dir_path = ModLoaderMod.get_unpacked_dir().path_join(EM_DIR)
-	
 	ModLoaderMod.install_script_hooks("res://Scripts/Save/GlobalProgression.gd", mod_dir_path.path_join("extensions/Scripts/Save/GlobalProgression.hooks.gd"))
+	ModLoaderMod.install_script_hooks("res://Globals/Progression.gd", mod_dir_path.path_join("extensions/Globals/Progression.hooks.gd"))
+	ModLoaderMod.install_script_hooks("res://Scripts/Hosts/SaberBot/ControlledSaber.gd", mod_dir_path.path_join("extensions/Scripts/Hosts/SaberBot/ControlledSaber.hooks.gd"))
+	ModLoaderMod.install_script_hooks("res://Scripts/Hosts/Enemy.gd", mod_dir_path.path_join("extensions/Scripts/Hosts/Enemy.hooks.gd"))
+	
 	install_em1()
 	install_em2()
 	install_em3()
@@ -70,5 +74,3 @@ func install_em3():
 	ModLoaderMod.install_script_extension(mod_dir_path.path_join("extensions/Scripts/Hosts/ChainBot/Grapple.gd"))
 	ModLoaderMod.install_script_hooks("res://Scripts/Hosts/BatBot/EnergyBall.gd", mod_dir_path.path_join("extensions/Scripts/Hosts/BatBot/EnergyBall.hooks.gd"))
 	ModLoaderMod.install_script_hooks("res://Scripts/Violence/Projectile.gd", mod_dir_path.path_join("extensions/Scripts/Violence/Projectile.hooks.gd"))
-	ModLoaderMod.install_script_hooks("res://Scripts/Hosts/Enemy.gd", mod_dir_path.path_join("extensions/Scripts/Hosts/Enemy.hooks.gd"))
-

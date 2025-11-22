@@ -51,11 +51,33 @@ func update_laser_sweep(chain: ModLoaderHookChain, delta):
 	var cpu := chain.reference_object as CPU_BOSS
 	
 	if cpu.AI.em1:
-		delta *= 1.5
+		var scale_factor = 1.5
 		if cpu.AI.phase > 0:
-			delta *= 2.0
-	
-	chain.execute_next([delta]) # run vanilla method
+			scale_factor *= 2.0
+		delta *= scale_factor
+		cpu.laser_timer = min(cpu.LASER_DURATION, cpu.laser_timer + delta)
+		var t = cpu.laser_timer / cpu.LASER_DURATION
+		
+		var laser_angle = cpu.laser_start_angle*(1.0 - t) + cpu.laser_end_angle*t
+		var laser_endpoint = cpu.laser_center + Vector2.RIGHT.rotated(laser_angle)*cpu.laser_radius
+		cpu.laser_endpoint = cpu.point_laser_at_point(laser_endpoint)
+		
+		var laser_attack = Attack.new(self, 5 * (1.0 + scale_factor))
+		laser_attack.impulse = Vector2.RIGHT.rotated(laser_angle)*100
+		Violence.melee_attack(cpu.eye_laser_collider, laser_attack)
+		
+		cpu.laser_fire_spawn_timer -= delta
+		if cpu.laser_fire_spawn_timer < 0:
+			cpu.laser_fire_spawn_timer = cpu.LASER_FIRE_SPAWN_INTERVAL
+			cpu.spawn_fire_at_point(laser_endpoint)
+			
+		cpu.eye_laser_endpoint_sprite.global_scale = Vector2.ONE*(0.5 + randf()*0.5)
+		cpu.eye_laser_origin_sprite.global_scale = Vector2.ONE*(0.5 + randf()*0.5)
+			
+		if cpu.laser_timer >= cpu.LASER_DURATION:
+			cpu.stop_laser_sweep()
+	else:
+		chain.execute_next([delta]) # run vanilla method
 
 # extend laser past arena edge
 func point_laser_at_point(chain: ModLoaderHookChain, laser_endpoint):
@@ -70,7 +92,7 @@ func point_laser_at_point(chain: ModLoaderHookChain, laser_endpoint):
 	
 	if cpu.AI.em1:
 		
-		laser_endpoint += 66*laser_dir 
+		laser_endpoint += 150*laser_dir 
 		
 		var laser_length = laser_origin.distance_to(laser_endpoint) * 1.5
 		cpu.eye_laser.rotation = (laser_endpoint - laser_origin).angle()

@@ -82,7 +82,7 @@ func initialize(body_, starting_conditions = null):
 		var d_l_process = Callable(states[State.DIAGONAL_LASER][PROCESS])
 		states[State.DIAGONAL_LASER][PROCESS] = func():
 			if state_timer < 0.0:
-				if not second_laser: #|#
+				if not second_laser:
 					second_laser = true
 					set_state(State.TELEGRAPH_LASER)
 				else:

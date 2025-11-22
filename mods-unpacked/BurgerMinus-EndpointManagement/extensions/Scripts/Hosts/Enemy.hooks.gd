@@ -1,5 +1,44 @@
 extends Object
 
+func toggle_enhancement(chain: ModLoaderHookChain, is_player):
+	
+	var enemy = chain.reference_object as Enemy
+	
+	chain.execute_next([is_player])
+	
+	if not enemy is CPU_BOSS and not enemy is CityBossOrb:
+		enemy.stun_resist = 0
+	
+
+func handle_skin(chain: ModLoaderHookChain):
+	
+	var enemy = chain.reference_object as Enemy
+	
+	chain.execute_next()
+	
+	if enemy.enemy_golem != null and enemy.enemy_type == enemy.enemy_golem.obsession_host_type:
+		
+		match enemy.enemy_type: # my programming professor would be so disappointed in me rn
+			
+			Enemy.EnemyType.SHOTGUN:
+				enemy.sprite.texture = Util.get_cached_texture("res://Art/Characters/ShotgunnerRAM/Skin_RGB_63x113.png")
+			Enemy.EnemyType.CHAIN:
+				enemy.sprite.texture = Util.get_cached_texture("res://Art/Characters/ChainbotRAM/skin_gladiator_107x109.png")
+			Enemy.EnemyType.FLAME:
+				enemy.sprite.texture = Util.get_cached_texture(enemy.explosive_skin_path)
+			Enemy.EnemyType.WHEEL:
+				enemy.sprite.texture = Util.get_cached_texture(enemy.bulk_delivery_skin_path)
+			Enemy.EnemyType.SHIELD:
+				enemy.sprite.texture = Util.get_cached_texture(enemy.purple_skin_path)
+			Enemy.EnemyType.SABER:
+				enemy.sprite.texture = Util.get_cached_texture(enemy.purple_skin_path)
+			Enemy.EnemyType.ARCHER:
+				enemy.sprite.texture = Util.get_cached_texture(enemy.turret_skin_path)
+				enemy.bow_sprite.texture = Util.get_cached_texture(enemy.turret_bow)
+			Enemy.EnemyType.BAT:
+				enemy.sprite.texture = Util.get_cached_texture(enemy.white_skin_path)
+				enemy.paddle_sprite.texture = Util.get_cached_texture(enemy.white_bat)
+
 func _physics_process(chain: ModLoaderHookChain, delta):
 	
 	var enemy = chain.reference_object as Enemy

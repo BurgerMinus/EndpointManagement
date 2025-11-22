@@ -130,7 +130,7 @@ func define_states():
 			t_s_process.call()
 			return
 		
-		if not is_instance_valid(swap_target) or swap_target.dead:
+		if not is_instance_valid(swap_target) or swap_target.dead or swap_target is GolemSpider:
 			swap_cooldown = 0.5
 			set_state(State.HOST_AUTOPILOT)
 			return
@@ -173,7 +173,7 @@ func define_states():
 			swap_immediately()
 
 func _process(delta):
-
+	
 	if adv_boss_ai:
 		swap_telegraph_timer -= delta
 	
@@ -214,7 +214,7 @@ func apply_host_buffs():
 		match host.enemy_type:
 			
 			Enemy.EnemyType.SHOTGUN:
-				host.full_auto = true
+				host.max_attack_cooldown *= 0.85
 			
 			Enemy.EnemyType.CHAIN:
 				host.grapple.retract_force *= 1.25
@@ -229,7 +229,7 @@ func apply_host_buffs():
 				host.min_bullet_orbit_speed += 1.0
 			
 			Enemy.EnemyType.SABER:
-				host.dash_speed *= 1.33
+				host.dash_speed *= 1.5
 			
 			Enemy.EnemyType.ARCHER:
 				host.speed_while_charging += 0.1*host.max_speed
@@ -421,8 +421,12 @@ func generate_golem_upgrade_set():
 		["efficiency", "haste"]
 	]
 	var golem_upgrade_set = presets.pick_random() if golem_upgrade_seed == -1 else presets[golem_upgrade_seed % 8]
-	if randf() > 0.9:
-		golem_upgrade_set.append(Util.choose_weighted(["habit", "compulsion", "thorn"], [8,5, 1.0, 0.5]))
+	if randf() < 0.1:
+		golem_upgrade_set.append("habit")
+	if randf() < 0.01:
+		golem_upgrade_set.append("compulsion")
+	if randf() < 0.001:
+		golem_upgrade_set.append("thorn")
 	return golem_upgrade_set
 
 func set_golem_upgrade(g, active = true):
@@ -463,7 +467,7 @@ func toggle_obsession(active = true):
 		bot = randi() % 7
 		if bot == host.enemy_type:
 			bot = 7
-	var obsession_set = generate_obsession_set(Enemy.ENEMY_NAME[bot])
+	var obsession_set = generate_obsession_set("Deadlift")#Enemy.ENEMY_NAME[bot])
 	var upgrade_sets = generate_hyperopia_sets() if golem_upgrades["hyperopia"] else valid_upgrades
 	upgrades.clear()
 	if active:

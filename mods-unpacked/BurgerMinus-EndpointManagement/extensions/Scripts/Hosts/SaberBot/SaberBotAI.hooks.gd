@@ -19,6 +19,20 @@ func initialize(chain: ModLoaderHookChain, body_, starting_conditions = null):
 		if ai.body.enemy_golem != null and ai.body.enemy_golem.adv_host_ai and ai.AI_level >= 3:
 			if ai.can_approach_for_slash() and ai.dist_to_foe < 150 and randf() < ai.delta:
 				ai.set_state(ai.States.PREP_SLASH)
+	
+	var s_a_process = Callable(ai.states[ai.States.STAB_ALLY][ai.PROCESS])
+	ai.states[ai.States.STAB_ALLY][ai.PROCESS] = func():
+		s_a_process.call()
+		if ai.body.enemy_golem != null and ai.body.enemy_golem.adv_host_ai and ai.AI_level >= 3:
+			if ai.state_counter == 1 and ai.state_timer < 0.2:
+				ai.state_timer = 0.0
+	
+	var s_process = Callable(ai.states[ai.States.STAB][ai.PROCESS])
+	ai.states[ai.States.STAB][ai.PROCESS] = func():
+		s_process.call()
+		if ai.body.enemy_golem != null and ai.body.enemy_golem.adv_host_ai and ai.AI_level >= 3:
+			ai.state_timer -= ai.delta*2
+			ai.set_saber_target_point(ai.body.saber.target_point.lerp(ai.foe_pos - (ai.foe_pos - ai.body.saber.global_position)*2, 1.0))
 
 # attempt to deflect projectiles, otherwise aim at player
 func handle_hovering_sword(chain: ModLoaderHookChain, delta):

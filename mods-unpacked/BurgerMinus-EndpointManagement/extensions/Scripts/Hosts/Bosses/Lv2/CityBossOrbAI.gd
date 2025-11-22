@@ -104,4 +104,5 @@ func initialize(b, starting_conditions = null):
 
 func end_attack():
 	super()
-	attack_cooldown = 2.0
+	if em2:
+		attack_cooldown = 1.5 + 1.5 * (body.boss.health / body.boss.max_health)

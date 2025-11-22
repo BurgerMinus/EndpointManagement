@@ -1,13 +1,13 @@
 Installation instructions:
-1. Download the GodotModLoader zip from https://github.com/GodotModding/godot-mod-loader/releases if you haven't already
-2. Download the latest zip release or download the 'mods_unpacked' folder as a zip file
-3. Create a folder called "mods" in your game directory (next to RAM.exe and RAM.pck) and place the mod zip in the mods folder
+1. Download the GodotModLoader zip from https://github.com/GodotModding/godot-mod-loader/releases if you haven't already done so.
+2. Download the latest zip release or download the 'mods_unpacked' folder as a zip file.
+3. Create a folder called "mods" in your game directory (next to RAM.exe and RAM.pck) and place the zip in the "mods" folder.
 
 EM1 CPU Changes:
 - Health increased from 3000 to 5000 and CPU will perform 4 "super moves" instead of 2
 - Ram attack has increased speed and acceleration, and no longer provides a damage multiplier
 - Explosion waves travel twice as quickly
-- Laser attack turns more quickly, extends further, and is done twice 
+- Laser attack turns more quickly, extends further, deals more damage, and is done twice 
 - CPU can no longer be moved when standing in the middle of the arena for certain moves
 - Homing pound attack can no longer be interrupted
 - Summons 4/6 enemies at once instead of 2
@@ -39,6 +39,7 @@ EM2 Heap Orb Changes (tethered):
 
 EM2 Heap Orb Changes (untethered):
 - Control timer decreased from 5 seconds to 4
+- Attack cooldown decreases as the Heap's health decreases
 - Orbs cannot be killed
 - Orb moves significantly faster during blast attack
 - Orb tracks the player better during persistent laser attack
@@ -56,8 +57,8 @@ EM3 GOLEM Changes:
 - GOLEM Boss has a swap variety bonus applied to its kills (yippie)
 
 EM3 Steeltoe Changes:
-- Steeltoe will fire as soon as its attack cooldown is over (usually)
-- Steeltoe will perform Nail Drivers more often
+- 15% decreased attack cooldown
+- Steeltoe will perform Nail Drivers much more often
 
 EM3 Router Changes:
 - Router has increased base dash strength (similar effect to Preheated Tires)
@@ -79,7 +80,8 @@ EM3 Collider Changes:
 EM3 Tachi Changes:
 - Tachi will attempt to deflect projectiles if the saber is idle
 - Tachi has a chance to activate KILL MODE when the player is in range
-- 33% increased KILL MODE dash speed
+- Tachi will stab more rapidly and accurately
+- 50% increased KILL MODE dash speed
 
 EM3 Thistle Changes:
 - Thistle will attempt to hit the player with suspended lasers during a bomb boost (it is not very good at it)
@@ -98,4 +100,4 @@ EM3 GOLEM Upgrade Notes:
 - Hubris: when its swap shield is low, the GOLEM will attempt to swap early in order to avoid a post-mortem
 - Hyperopia: replaces the normal upgrade presets with new, better upgrade presets that it gives to every bot except the current type
 - Indulgence: if certain conditions are met and the GOLEM has enough energy, it will perform a chain swap like it does in phase 2
-- Obsession: the set of upgrades given to the chosen host is randomly selected from preset upgrade builds, they are not truly random
+- Obsession: the set of upgrades given to the chosen host is randomly selected from preset upgrade builds, the chosen host type also gets a new skin when possessed by the GOLEM
